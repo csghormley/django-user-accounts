@@ -17,6 +17,10 @@ from account.conf import settings
 from account.hooks import hookset
 from account.models import EmailAddress
 
+try:
+    from passwords.fields import PasswordField
+except ImportError:
+    PasswordField = forms.CharField
 
 alnum_re = re.compile(r"^\w+$")
 
@@ -29,7 +33,7 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(),
         required=True
     )
-    password = forms.CharField(
+    password = PasswordField(
         label=_("Password"),
         widget=forms.PasswordInput(render_value=False)
     )
@@ -138,7 +142,7 @@ class ChangePasswordForm(forms.Form):
         label=_("Current Password"),
         widget=forms.PasswordInput(render_value=False)
     )
-    password_new = forms.CharField(
+    password_new = PasswordField(
         label=_("New Password"),
         widget=forms.PasswordInput(render_value=False)
     )
